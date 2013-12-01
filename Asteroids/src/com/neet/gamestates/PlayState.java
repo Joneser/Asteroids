@@ -1,28 +1,43 @@
 package com.neet.gamestates;
 
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.neet.entities.Player;
+import com.neet.managers.GameKeys;
 import com.neet.managers.GameStateManager;
 
 public class PlayState extends GameState {
 	
+	private ShapeRenderer sr;
+	
+	private Player player;
+	
 	public PlayState(GameStateManager gsm) {
 		super(gsm);
-		init();
+		
 	}
 
 	public void init() {
+		
+		sr = new ShapeRenderer();
+		player = new Player();
 
 	}
 
 	public void update(float dt) {
-		System.out.println("Play state updating");
+		
+		handleInput();
+		
+		player.update(dt);
 	}
 
 	public void draw() {
-		System.out.println("Play state drawing");
+		player.draw(sr);
 	}
 
-	public void hanedleInput() {
-
+	public void handleInput() {
+		player.setLeft(GameKeys.isDown(GameKeys.LEFT));
+		player.setRight(GameKeys.isDown(GameKeys.RIGHT));
+		player.setUp(GameKeys.isDown(GameKeys.UP));
 	}
 
 	public void dispose() {

@@ -7,13 +7,13 @@ public class GameKeys {
 	
 	private static final int NUM_KEYS = 8;
 	public static final int UP = 0;
-	public static final int DOWN = 0;
-	public static final int LEFT = 0;
-	public static final int RIGHT = 0;
-	public static final int ENTER = 0;
-	public static final int ESCAPE = 0;
-	public static final int SHIFT = 0;
-	public static final int SPACE = 0;
+	public static final int DOWN = 1;
+	public static final int LEFT = 2;
+	public static final int RIGHT = 3;
+	public static final int ENTER = 4;
+	public static final int ESCAPE = 5;
+	public static final int SHIFT = 6;
+	public static final int SPACE = 7;
 	
 	static {
 		keys = new boolean[NUM_KEYS];
