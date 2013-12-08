@@ -34,6 +34,10 @@ public class Player extends SpaceObject {
 	private Line2D.Float[] hitLines;
 	private Point2D.Float[] hitLinesVector;
 	
+	private long score;
+	private int extraLives;
+	private long requiredScore;
+	
 	public Player(ArrayList<Bullet> bullets) {
 		
 		this.bullets = bullets;
@@ -57,6 +61,9 @@ public class Player extends SpaceObject {
 		hitTimer = 0;
 		hitTime = 2;
 		
+		score = 0;
+		extraLives = 3;
+		requiredScore = 10000;
 		
 	}
 	
@@ -112,6 +119,22 @@ public class Player extends SpaceObject {
 		hit = dead = false;
 	}
 	
+	public long getScore() {
+		return score;
+	}
+	
+	public int getLives() {
+		return extraLives;
+	}
+	
+	public void loseLife() {
+		extraLives--;
+	}
+	
+	public void incrementScore(long l) {
+		score += l;
+	}
+	
 	public void shoot() {
 		if(bullets.size() == MAX_BULLETS) {
 			return;
@@ -159,6 +182,12 @@ public class Player extends SpaceObject {
 				);
 			}
 			return;
+		}
+		
+		// check extra lives
+		if(score >= requiredScore) {
+			extraLives++;
+			requiredScore += 10000;
 		}
 		
 		// turning
