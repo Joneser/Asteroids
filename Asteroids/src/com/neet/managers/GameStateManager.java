@@ -1,6 +1,7 @@
 package com.neet.managers;
 
 import com.neet.gamestates.GameState;
+import com.neet.gamestates.MenuState;
 import com.neet.gamestates.PlayState;
 
 public class GameStateManager {
@@ -11,14 +12,14 @@ public class GameStateManager {
 	public static final int PLAY = 1;
 	
 	public GameStateManager() {
-		setState(PLAY);
+		setState(MENU);
 	}
 	
 	public void setState(int state) {
 		if(gameState != null) gameState.dispose();
 		
 		if(state == MENU) {
-			
+			gameState = new MenuState(this);
 		}
 		if(state == PLAY) {
 			gameState = new PlayState(this);
