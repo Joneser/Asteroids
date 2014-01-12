@@ -11,7 +11,7 @@ import java.util.Collections;
 
 public class HighscoreManager {
 	
-	private ArrayList<Score> scores;
+	private ArrayList<Score> scores = new ArrayList<Score>();
 	
 	private static final String HIGHSCORE_FILE = "score.dat";
 	
@@ -29,7 +29,7 @@ public class HighscoreManager {
 		Collections.sort(scores, comparator);
 	}
 	
-	public void addScore(String name, int score) {
+	public void addScore(String name, long score) {
 		loadScoreFile();
 		scores.add(new Score(name, score));
 		updateScoreFile();
@@ -76,10 +76,6 @@ public class HighscoreManager {
                 System.out.println("[Update] Error: " + e.getMessage());
             }
         }
-	}
-	
-	public void getHighscoreString() {
-		
 	}
 
 }

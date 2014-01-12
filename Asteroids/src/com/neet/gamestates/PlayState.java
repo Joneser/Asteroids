@@ -15,11 +15,14 @@ import com.neet.entities.Player;
 import com.neet.main.Game;
 import com.neet.managers.GameKeys;
 import com.neet.managers.GameStateManager;
+import com.neet.managers.HighscoreManager;
+import com.neet.managers.Score;
 
 public class PlayState extends GameState {
 	
 	private SpriteBatch sb;
 	private ShapeRenderer sr;
+	private HighscoreManager hm;
 	
 	private BitmapFont font;
 	
@@ -42,6 +45,7 @@ public class PlayState extends GameState {
 		
 		sb = new SpriteBatch();
 		sr = new ShapeRenderer();
+		hm = new HighscoreManager();
 		
 		// set font
 		FreeTypeFontGenerator gen = new FreeTypeFontGenerator(Gdx.files.internal("fonts/Hyperspace Bold.ttf"));
@@ -127,6 +131,12 @@ public class PlayState extends GameState {
 		if(player.isDead()) {
 			player.reset();
 			player.loseLife();
+			if(player.getLives() == 0) {
+				// Go back to menu screen for now
+				hm.addScore("Player", player.getScore());
+				
+				gsm.setState(0);
+			}
 			return;
 		}
 		

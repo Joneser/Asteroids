@@ -5,10 +5,10 @@ import java.io.Serializable;
 @SuppressWarnings("serial")
 public class Score implements Serializable {
 
-	private int score;
+	private long score;
 	private String naam;
 	
-	public int getScore() {
+	public long getScore() {
 		return score;
 	}
 	
@@ -16,7 +16,7 @@ public class Score implements Serializable {
 		return naam;
 	}
 	
-	public Score(String naam, int score) {
+	public Score(String naam, long score) {
 		this.score = score;
 		this.naam = naam;
 	}

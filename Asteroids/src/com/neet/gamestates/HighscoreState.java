@@ -1,6 +1,5 @@
 package com.neet.gamestates;
 
-import java.awt.Color;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
@@ -13,17 +12,16 @@ import com.neet.entities.Asteroid;
 import com.neet.main.Game;
 import com.neet.managers.GameKeys;
 import com.neet.managers.GameStateManager;
+import com.neet.managers.HighscoreManager;
+import com.neet.managers.Score;
 
-public class MenuState extends GameState   {
+public class HighscoreState extends GameState {
 	
 	private SpriteBatch sb;
 	private ShapeRenderer sr;
+	private HighscoreManager hm;
 	
 	private int currentChoice = 0;
-	
-	private String[] options = {
-			"Play", "Highscores", "Help", "Quit"
-	};
 	
 	private BitmapFont font;
 	
@@ -32,7 +30,7 @@ public class MenuState extends GameState   {
 	private int level;
 	private int totalAsteroids;	
 
-	public MenuState(GameStateManager gsm) {
+	public HighscoreState(GameStateManager gsm) {
 		super(gsm);
 	}
 
@@ -40,6 +38,7 @@ public class MenuState extends GameState   {
 	public void init() {
 		sb = new SpriteBatch();
 		sr = new ShapeRenderer();
+		hm = new HighscoreManager();
 		
 		// set font
 		FreeTypeFontGenerator gen = new FreeTypeFontGenerator(Gdx.files.internal("fonts/Hyperspace Bold.ttf"));
@@ -63,7 +62,6 @@ public class MenuState extends GameState   {
 			float y = MathUtils.random(Game.HEIGHT);
 			
 			asteroids.add(new Asteroid(x, y, Asteroid.LARGE));
-			
 		}	
 	}
 
@@ -87,13 +85,26 @@ public class MenuState extends GameState   {
 	public void draw() {
 		sb.setColor(1, 1, 1, 1);
 		sb.begin();
-		for(int i = 0; i < options.length; i++) {
-			if(i == currentChoice) {
-				font.draw(sb, "->", 170, 240 - i * 30);
-			}
-			
-			font.draw(sb, options[i], 210, 240 - i * 30);
+				
+		ArrayList<Score> scores;
+		scores = hm.getScores();
+		
+		int max = 8;
+		
+		int index = scores.size() - 1;
+		
+		if(index > max) {
+			index = max - 1;
 		}
+		int x = -1;
+
+		while (index != x) {
+		    font.draw(sb, scores.get(index).getNaam() + ": " + scores.get(index).getScore(), 180, 350 - index * 30);
+		    index--;
+		}		
+		
+		font.draw(sb, "->", 120, 50);
+		font.draw(sb, "Back to Main Menu", 160, 50);
 		sb.end();
 		
 		// draw asteroids
@@ -105,19 +116,7 @@ public class MenuState extends GameState   {
 	
 	private void select() {
 		if(currentChoice == 0) {
-			gsm.setState(1);
-		}
-		
-		if(currentChoice == 2) {
-			
-		}
-		
-		if(currentChoice == 1) {
-			gsm.setState(2);
-		}
-		
-		if(currentChoice == 3) {
-			Gdx.app.exit();
+			gsm.setState(0);
 		}
 	}
 
@@ -128,20 +127,6 @@ public class MenuState extends GameState   {
 			select();
 		}
 		
-		if(GameKeys.isPressed(GameKeys.DOWN)) {
-			currentChoice++;
-			if(currentChoice > 3) {
-				currentChoice = 0;
-			}
-		}
-		
-		if(GameKeys.isPressed(GameKeys.UP)) {
-			currentChoice--;
-			if(currentChoice < 0) {
-				currentChoice = 3;
-			}
-		}
-		
 	}
 
 	@Override
@@ -150,5 +135,4 @@ public class MenuState extends GameState   {
 		
 	}
 
-	
 }
