@@ -16,7 +16,6 @@ import com.neet.main.Game;
 import com.neet.managers.GameKeys;
 import com.neet.managers.GameStateManager;
 import com.neet.managers.HighscoreManager;
-import com.neet.managers.Score;
 
 public class PlayState extends GameState {
 	
@@ -33,8 +32,6 @@ public class PlayState extends GameState {
 	private ArrayList<Particle> particles;
 	
 	private int level;
-	private int totalAsteroids;
-	private int numAsteroidsLeft;
 	
 	public PlayState(GameStateManager gsm) {
 		super(gsm);
@@ -72,7 +69,6 @@ public class PlayState extends GameState {
 	
 	private void splitAsteroids(Asteroid a) {
 		createParticles(a.getX(), a.getY());
-		numAsteroidsLeft--;
 		if(a.getType() == Asteroid.LARGE) {
 			asteroids.add(new Asteroid(a.getX(), a.getY(), Asteroid.MEDIUM));
 			asteroids.add(new Asteroid(a.getX(), a.getY(), Asteroid.MEDIUM));
@@ -88,8 +84,6 @@ public class PlayState extends GameState {
 		asteroids.clear();
 		
 		int numToSpawn = 4 + level - 1;
-		totalAsteroids = numToSpawn * 7;
-		numAsteroidsLeft = totalAsteroids;
 		
 		for(int i = 0; i < numToSpawn; i++) {
 			float x = MathUtils.random(Game.WIDTH);

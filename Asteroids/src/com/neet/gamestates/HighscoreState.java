@@ -28,7 +28,6 @@ public class HighscoreState extends GameState {
 	private ArrayList<Asteroid> asteroids;
 		
 	private int level;
-	private int totalAsteroids;	
 
 	public HighscoreState(GameStateManager gsm) {
 		super(gsm);
@@ -55,7 +54,6 @@ public class HighscoreState extends GameState {
 		asteroids.clear();
 		
 		int numToSpawn = 4 + level - 1;
-		totalAsteroids = numToSpawn * 7;
 		
 		for(int i = 0; i < numToSpawn; i++) {
 			float x = MathUtils.random(Game.WIDTH);

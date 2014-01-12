@@ -1,6 +1,5 @@
 package com.neet.gamestates;
 
-import java.awt.Color;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
@@ -30,7 +29,6 @@ public class MenuState extends GameState   {
 	private ArrayList<Asteroid> asteroids;
 		
 	private int level;
-	private int totalAsteroids;	
 
 	public MenuState(GameStateManager gsm) {
 		super(gsm);
@@ -56,7 +54,6 @@ public class MenuState extends GameState   {
 		asteroids.clear();
 		
 		int numToSpawn = 4 + level - 1;
-		totalAsteroids = numToSpawn * 7;
 		
 		for(int i = 0; i < numToSpawn; i++) {
 			float x = MathUtils.random(Game.WIDTH);
