@@ -28,8 +28,6 @@ public class MenuState extends GameState   {
 	
 	private ArrayList<Asteroid> asteroids;
 		
-	private int level;
-
 	public MenuState(GameStateManager gsm) {
 		super(gsm);
 	}
@@ -45,7 +43,6 @@ public class MenuState extends GameState   {
 		
 		asteroids = new ArrayList<Asteroid>();
 				
-		level = 1;
 		spawnAsteroids();
 		
 	}
@@ -53,9 +50,7 @@ public class MenuState extends GameState   {
 	private void spawnAsteroids() {
 		asteroids.clear();
 		
-		int numToSpawn = 4 + level - 1;
-		
-		for(int i = 0; i < numToSpawn; i++) {
+		for(int i = 0; i < 4; i++) {
 			float x = MathUtils.random(Game.WIDTH);
 			float y = MathUtils.random(Game.HEIGHT);
 			

@@ -1,6 +1,7 @@
 package com.neet.gamestates;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -24,6 +25,7 @@ public class PlayState extends GameState {
 	private HighscoreManager hm;
 	
 	private BitmapFont font;
+	private FreeTypeFontGenerator gen;
 	
 	private Player player;
 	private ArrayList<Bullet> bullets;
@@ -31,7 +33,17 @@ public class PlayState extends GameState {
 	
 	private ArrayList<Particle> particles;
 	
+	private String[] alpha = {
+			" ", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "."
+	};
+	
+	private String[] playerName = { "A", "A", "A" };
+	
+	private int playerNameIndex = 0;
+	private int alphaIndex = 1;
+	
 	private int level;
+	private boolean isOver = false;
 	
 	public PlayState(GameStateManager gsm) {
 		super(gsm);
@@ -45,8 +57,7 @@ public class PlayState extends GameState {
 		hm = new HighscoreManager();
 		
 		// set font
-		FreeTypeFontGenerator gen = new FreeTypeFontGenerator(Gdx.files.internal("fonts/Hyperspace Bold.ttf"));
-		font = gen.generateFont(20);
+		gen = new FreeTypeFontGenerator(Gdx.files.internal("fonts/Hyperspace Bold.ttf"));
 		
 		bullets = new ArrayList<Bullet>();
 		
@@ -125,11 +136,8 @@ public class PlayState extends GameState {
 		if(player.isDead()) {
 			player.reset();
 			player.loseLife();
-			if(player.getLives() == 0) {
-				// Go back to menu screen for now
-				hm.addScore("Player", player.getScore());
-				
-				gsm.setState(0);
+			if(player.getLives() == 0) {				
+				isOver = true;
 			}
 			return;
 		}
@@ -204,7 +212,9 @@ public class PlayState extends GameState {
 
 	public void draw() {
 		// draw player
-		player.draw(sr);
+		if(!isOver) {
+			player.draw(sr);	
+		}
 		
 		// draw bullets
 		for(int i = 0; i < bullets.size(); i++) {
@@ -224,17 +234,61 @@ public class PlayState extends GameState {
 		// draw score
 		sb.setColor(1, 1, 1, 1);
 		sb.begin();
+		font = gen.generateFont(20);
 		font.draw(sb, Long.toString(player.getScore()), 40, 390);
+		if(isOver) {
+			font = gen.generateFont(50);
+			for(int i = 0; i < playerName.length; i++) {
+				font.draw(sb, playerName[i], 140 + 100 * i, 300);
+			}
+		}
 		sb.end();
 		
 	}
 
 	public void handleInput() {
-		player.setLeft(GameKeys.isDown(GameKeys.LEFT));
-		player.setRight(GameKeys.isDown(GameKeys.RIGHT));
-		player.setUp(GameKeys.isDown(GameKeys.UP));
-		if(GameKeys.isPressed(GameKeys.SPACE)) {
-			player.shoot();
+		if(!isOver) {
+			player.setLeft(GameKeys.isDown(GameKeys.LEFT));
+			player.setRight(GameKeys.isDown(GameKeys.RIGHT));
+			player.setUp(GameKeys.isDown(GameKeys.UP));
+			if(GameKeys.isPressed(GameKeys.SPACE)) {
+				player.shoot();
+			}	
+		} else {
+			// Handling highscore name
+			if(GameKeys.isPressed(GameKeys.LEFT)) {
+				playerNameIndex--;
+				if(playerNameIndex < 0) {
+					playerNameIndex = 2;
+				}
+				alphaIndex = Arrays.asList(alpha).indexOf(playerName[playerNameIndex]);
+			}
+			if(GameKeys.isPressed(GameKeys.RIGHT)) {
+				playerNameIndex++;
+				if(playerNameIndex > 2) {
+					playerNameIndex = 0;
+				}
+				alphaIndex = Arrays.asList(alpha).indexOf(playerName[playerNameIndex]);
+			}
+			if(GameKeys.isPressed(GameKeys.UP)) {
+				alphaIndex++;
+				if(alphaIndex > 27) {
+					alphaIndex = 0;
+				}
+				playerName[playerNameIndex] = alpha[alphaIndex];
+			}
+			if(GameKeys.isPressed(GameKeys.DOWN)) {
+				alphaIndex--;
+				if(alphaIndex < 0) {
+					alphaIndex = 27;
+				}
+				playerName[playerNameIndex] = alpha[alphaIndex];
+			}
+			if(GameKeys.isPressed(GameKeys.ENTER)) {
+				// On pressing enter, save the name and highschore, and navigate to the highscores screen
+				hm.addScore(playerName[0] + " " + playerName[1] + " " + playerName[2], player.getScore());
+				gsm.setState(2);
+			}
 		}
 	}
 
