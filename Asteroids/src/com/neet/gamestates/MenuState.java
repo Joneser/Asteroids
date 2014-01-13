@@ -21,7 +21,7 @@ public class MenuState extends GameState   {
 	private int currentChoice = 0;
 	
 	private String[] options = {
-			"Play", "Highscores", "Help", "Quit"
+			"Play", "Highscores", "Quit"
 	};
 	
 	private BitmapFont font;
@@ -100,15 +100,11 @@ public class MenuState extends GameState   {
 			gsm.setState(1);
 		}
 		
-		if(currentChoice == 2) {
-			
-		}
-		
 		if(currentChoice == 1) {
 			gsm.setState(2);
 		}
 		
-		if(currentChoice == 3) {
+		if(currentChoice == 2) {
 			Gdx.app.exit();
 		}
 	}
@@ -122,7 +118,7 @@ public class MenuState extends GameState   {
 		
 		if(GameKeys.isPressed(GameKeys.DOWN)) {
 			currentChoice++;
-			if(currentChoice > 3) {
+			if(currentChoice > 2) {
 				currentChoice = 0;
 			}
 		}
@@ -130,7 +126,7 @@ public class MenuState extends GameState   {
 		if(GameKeys.isPressed(GameKeys.UP)) {
 			currentChoice--;
 			if(currentChoice < 0) {
-				currentChoice = 3;
+				currentChoice = 2;
 			}
 		}
 		

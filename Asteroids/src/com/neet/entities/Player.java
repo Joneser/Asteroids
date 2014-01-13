@@ -115,6 +115,7 @@ public class Player extends SpaceObject {
 	public void reset() {
 		x = Game.WIDTH / 2;
 		y = Game.HEIGHT / 2;
+		radians = 3.1415f / 2;
 		setShape();
 		hit = dead = false;
 	}
